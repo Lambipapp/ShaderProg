@@ -1,0 +1,150 @@
+surface
+AQSIS_V 2
+
+
+segment Data
+
+USES 473346
+
+param uniform  color blue
+param uniform  color yellow
+param uniform  float freq
+param uniform  color white
+param uniform  float lightIntensity
+param uniform  color speccolor
+param uniform  float bumpdepth
+param uniform  float nFreq
+varying  float f
+varying  float g
+varying  float b
+varying  point myPoint
+varying  normal n
+varying  vector V
+varying  color yr
+varying  color dcolor
+varying  color scolor
+
+
+segment Init
+	pushif 1
+	pushif 0
+	pushif 0
+	settc
+	pop blue
+	pushif 0
+	pushif 1
+	pushif 1
+	settc
+	pop yellow
+	pushif 8
+	pop freq
+	pushif 1
+	pushif 1
+	pushif 1
+	settc
+	pop white
+	pushif 0.100000001
+	pop lightIntensity
+	pushif 0.699999988
+	pushif 1
+	pushif 1
+	settc
+	pop speccolor
+	pushif 0.5
+	pop bumpdepth
+	pushif 5
+	pop nFreq
+
+
+segment Code
+	pushif 2
+	pushv freq
+	pushv u
+	mulff
+	mod
+	pop f
+	pushv f
+	pop g
+	pushif 10
+	pushv v
+	mulff
+	pop b
+	pushv f
+	pushif 0.25
+	pushif 0
+	smoothstep
+	pop f
+	pushv g
+	pushif 1.25
+	pushif 1
+	smoothstep
+	pop g
+	pushv g
+	pushv f
+	subff
+	pop f
+	pushv P
+	pop myPoint
+	pushv bumpdepth
+	setfp
+	pushv N
+	pushv nFreq
+	pushif 0.5
+	pushif 20
+	pushv v
+	pushv u
+	mulff
+	mulff
+	mod
+	mulff
+	noise1
+	pushv f
+	mulff
+	mulfp
+	mulpp
+	pushv myPoint
+	addpp
+	pop myPoint
+	pushv myPoint
+	calculatenormal
+	pop N
+	pushv N
+	normalize
+	pop n
+	pushv I
+	negp
+	normalize
+	pop V
+	pushv b
+	pushif 1
+	pushif 0.75
+	smoothstep
+	pop b
+	pushv f
+	pushv blue
+	pushv yellow
+	cmix
+	pop yr
+	pushv b
+	pushv yr
+	pushv white
+	cmix
+	pop yr
+	pushv n
+	diffuse
+	pushv yr
+	mulcc
+	pop dcolor
+	pushv lightIntensity
+	pushv V
+	pushv n
+	specular
+	pushv speccolor
+	mulcc
+	pop scolor
+	pushv scolor
+	pushv dcolor
+	addcc
+	pop Ci
+	pushv Os
+	pop Oi
